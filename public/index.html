@@ -124,7 +124,7 @@
 						<div class='content' id='content_bar'></div>
 					</div>
 					<div id='target'>
-						<p>號召更多朋友參與，達到最新目標：<strong>50,000</strong> 連署。</p>
+						<p>號召更多朋友參與，達到最新目標：<strong id="targetNumber">0</strong> 連署。</p>
 						<p>海洋的面積占地球71%，是世界最大的供氧來源，也孕育豐富的生物多樣性，包含鯨魚、海豚、海龜、珊瑚等美妙海洋生物。然而，海洋現在卻因塑膠污染、非法捕魚、氣候變遷等面臨前所未有的重大生態危機。我們需要更多人一起站出來連署加入，並捐款資助綠色和平！</p>
 					</div>
 				</div>
@@ -443,8 +443,8 @@
 
 	<!-- MC_FORM_STARTS -->
 	<form method="post" action="https://cloud.greenhk.greenpeace.org/up-dev-endpoint" class="" id="mc-form">
-		<input type="hidden" name="numSignupTarget" value="100">
-		<input type="hidden" name="numResponses" value="30">
+		<input type="hidden" name="numSignupTarget" value="%%=v(@Petition_Signup_Target__c)=%%">
+		<input type="hidden" name="numResponses" value="%%=v(@NumberOfResponses)=%%">
 		<input placeholder="FirstName" name="FirstName" type="text" value="">
 		<input placeholder="LastName" name="LastName" type="text" value="">
 		<input placeholder="Email" name="Email" type="email" value="">
@@ -469,69 +469,7 @@
 		<input name="req" type="hidden" value="post_data">
 	</form>
 	<!-- MC_FORM_ENDS -->
-	<!-- EN_FORM_STARTS -->
-	<!--
-	<form method="post" action="/page/63089/action/2" class="en__component en__component--page" id="en-form">
-	    <input type="hidden" name="hidden" class="en__hiddenFields" value="">
-	    <input type="hidden" name="sessionId" value="7969ec6a2a32477fb9b58c44063ad126-server9800">
-	    <input type="hidden" name="gatewaykey" value="">
-	    <input type="hidden" name="gatewayaccountid" value="">
-	    <input type="hidden" name="gatewaymode" value="">
-	    <ul class="en__errorList">
-	    </ul>
-	    <div class="en__component en__component--row en__component--row--1">
-	        <div class="en__component en__component en__component--column">
-	            <div class="en__component en__component--formblock main_form" style="">
-	                <div class="en__field en__field--text en__field--609971 en__field--emailAddress en__mandatory">
-	                    <label for="en__field_supporter_emailAddress" class="en__field__label" style="">電子信箱</label>
-	                    <div class="en__field__element en__field__element--text">
-	                        <input id="en__field_supporter_emailAddress" type="text" class="en__field__input en__field__input--text" name="supporter.emailAddress" value="" />
-	                    </div>
-	                </div>
-	                <div class="en__field en__field--text en__field--609973 en__field--lastName en__mandatory">
-	                    <label for="en__field_supporter_lastName" class="en__field__label" style="">姓氏</label>
-	                    <div class="en__field__element en__field__element--text">
-	                        <input id="en__field_supporter_lastName" type="text" class="en__field__input en__field__input--text" name="supporter.lastName" value="" />
-	                    </div>
-	                </div>
-	                <div class="en__field en__field--text en__field--609972 en__field--firstName en__mandatory">
-	                    <label for="en__field_supporter_firstName" class="en__field__label" style="">名字</label>
-	                    <div class="en__field__element en__field__element--text">
-	                        <input id="en__field_supporter_firstName" type="text" class="en__field__input en__field__input--text" name="supporter.firstName" value="" />
-	                    </div>
-	                </div>
-	                <div class="en__field en__field--text en__field--609975 en__field--phoneNumber en__mandatory">
-	                    <label for="en__field_supporter_phoneNumber" class="en__field__label" style="">聯絡電話</label>
-	                    <div class="en__field__element en__field__element--text">
-	                        <input id="en__field_supporter_phoneNumber" type="text" class="en__field__input en__field__input--text" name="supporter.phoneNumber" value="" />
-	                    </div>
-	                </div>
-	                <div class="en__field en__field--select en__field--609974 en__field--NOT_TAGGED_6 en__mandatory">
-	                    <label for="en__field_supporter_NOT_TAGGED_6" class="en__field__label" style="">出生年份</label>
-	                    <div class="en__field__element en__field__element--select">
-	                        <select id="en__field_supporter_NOT_TAGGED_6" class="en__field__input en__field__input--select" name="supporter.NOT_TAGGED_6">
-	                            <option value="">出生年份</option>
-	                        </select>
-	                    </div>
-	                </div>
-	                <input type="hidden" class="en__field__input en__field__input--hidden" name="supporter.NOT_TAGGED_28" value="TW" />
-	                <div class="en__field en__field--checkbox en__field--question en__field--7276 en__field--email-ok-taiwan">
-	                    <label class="en__field__label" style="">email_ok_taiwan</label>
-	                    <div class="en__field__element en__field__element--checkbox">
-	                        <div class="en__field__item">
-	                            <input id="en__field_supporter_questions_7276" checked type="checkbox" class="en__field__input en__field__input--checkbox" value="Y" name="supporter.questions.7276" />
-	                            <label for="en__field_supporter_questions_7276" class="en__field__label en__field__label--item">我要即時收到最新專案訊息，知道更多參與和協助的方法。（綠色和平尊重並保障您的個人隱私資料，您隨時可取消訂閱，請參考<a href="https://act.gp/37yxM6k">隱私保護政策</a>。）
-	                            </label>
-	                        </div>
-	                    </div>
-	                </div>
-	                <div class="en__submit"><button style="">立即連署</button></div>
-	            </div>
-	        </div>
-	    </div>
-	</form>-->
-	<!-- EN_FORM_ENDS -->
-
+	
 	<script src="%PUBLIC_URL%/vendor/jquery-1.9.1.min.js?v=123"></script>
 	<!-- <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script> -->
 	<script src="%PUBLIC_URL%/vendor/jquery-ui-1.10.4.min.js?v=123"></script>

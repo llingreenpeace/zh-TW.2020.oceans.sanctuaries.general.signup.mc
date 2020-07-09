@@ -1,9 +1,9 @@
 const {$, anime, autosize, Cookies, Highcharts, dataLayer} = window
 
 const donateUrl = "https://act.greenpeace.org/page/4723/donate/1?ref=2020-ocean_sanctuaries_thankyou_page";
-const shareUrl = "https://cloud.greenhk.greenpeace.org/zhtw.2020.oceans.sanctuaries";
-const shareFBUrl = "https://cloud.greenhk.greenpeace.org/zhtw.2020.oceans.sanctuaries";
-const shareLineUrl = "https://cloud.greenhk.greenpeace.org/zhtw.2020.oceans.sanctuaries";
+const shareUrl = "https://cloud.greenhk.greenpeace.org/petition.oceans.sanctuaries";
+const shareFBUrl = "https://cloud.greenhk.greenpeace.org/petition.oceans.sanctuaries";
+const shareLineUrl = "https://cloud.greenhk.greenpeace.org/petition.oceans.sanctuaries";
 const redirectDonateLink = "https://act.greenpeace.org/page/4723/donate/1?ref=2020-ocean_sanctuaries_thankyou_page"
 
 window.donate = () => {
@@ -33,6 +33,30 @@ window.share = () => {
 			"_blank"
 		);
 	}
+}
+
+/**
+ * Send the tracking event to the ga
+ * @param  {string} eventLabel The ga trakcing name, normally it will be the short campaign name. ex 2019-plastic_retailer
+ * @param  {[type]} eventValue Could be empty
+ * @return {[type]}            [description]
+ */
+const sendPetitionTracking = (eventLabel, eventValue) => {
+	window.dataLayer = window.dataLayer || [];
+
+	window.dataLayer.push({
+	    'event': 'gaEvent',
+	    'eventCategory': 'petitions',
+	    'eventAction': 'signup',
+	    'eventLabel': eventLabel,
+	    'eventValue' : eventValue
+	});
+
+	window.dataLayer.push({
+	    'event': 'fbqEvent',
+	    'contentName': eventLabel,
+	    'contentCategory': 'Petition Signup'
+	});
 }
 
 var pageInit = function(){
@@ -68,15 +92,19 @@ var pageInit = function(){
 
 	$.validator.addMethod( //override email with django email validator regex - fringe cases: "user@admin.state.in..us" or "name@website.a"
 		'email',
-		function(value, element){
-			return this.optional(element) || /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/i.test(value);
+		(value, element) => {
+			if (value) {
+				return /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/i.test(value);
+			}
+	
+			return true
 		},
 		'Email 格式錯誤'
 	);
 
 	$.validator.addMethod(
 		'validate-name',
-		function(value, element){
+		(value, element) => {
 			return new RegExp(/^[\u4e00-\u9fa5_a-zA-Z_ ]{1,40}$/i).test(value);
 		},
 		'姓氏格式不正確，請不要輸入數字或符號'
@@ -84,25 +112,17 @@ var pageInit = function(){
 
 	$.validator.addMethod(
 		"taiwan-phone",
-		function (value, element) {
-
-			// const phoneReg1 = new RegExp(/^0\d{1,2}-\d{6,8}$/).test(value);
-			// const phoneReg2 = new RegExp(/^0\d{1,2}\d{6,8}$/).test(value);
-			// const phoneReg3 = new RegExp(/^((?=(09))[0-9]{10})$/).test(value);
-			// const phoneReg4 = new RegExp(/^(886\d{1,2}\d{6,8})$/).test(value);
-			// const phoneReg5 = new RegExp(/^(886\d{1,2}-\d{7,9})$/).test(value);
-
+		(value, element) => {
 			const phoneReg6 = new RegExp(/^(0|886|\+886)?(9\d{8})$/).test(value);
 			const phoneReg7 = new RegExp(/^(0|886|\+886){1}[2-8]-?\d{6,8}$/).test(value);
-
-			if ($('#center_phone').val()) {
-				// return (phoneReg1 || phoneReg2 || phoneReg3 || phoneReg4 || phoneReg5)
+	
+			if (value) {
 				return (phoneReg6 || phoneReg7)
 			}
-			console.log('phone testing')
 			return true
 		},
-		"電話格式不正確，請只輸入數字 0912345678 和 02-23612351")
+		"電話格式不正確，請只輸入數字 0912345678 和 02-23612351"
+	)
 
 	$.validator.addClassRules({ // connect it to a css class
 		"email": {email: true},
@@ -134,9 +154,9 @@ var pageInit = function(){
 			$('#mc-form [name="Email"]').val($('#center_email').val());
 
 			if (!$('#center_phone').prop('required') && !$('#center_phone').val()) {
-			 	$('#mc-form [name="MobilePhone"]').val('0900000000');
+			 	$('#mc-form [name="MobilePhone"]').val('0900000000').replace(/^0{1}/, '');
 			} else {
-			 	$('#mc-form [name="MobilePhone"]').val($('#center_phone').val());
+			 	$('#mc-form [name="MobilePhone"]').val($('#center_phone').val().replace(/^0{1}/, ''));
 			}
 			$('#mc-form [name="Birthdate"]').val($('#center_yearofbirth').val());
 			
@@ -166,6 +186,10 @@ var pageInit = function(){
 			.then(response => {
 				console.log('fetch response', response);
 				if (response) {
+					if (response.Supporter) { // ok, go to next page
+						sendPetitionTracking("2020-ocean_sanctuaries");
+					}
+
 					hideFullPageLoading();
 					changeToPage(2);
 					
@@ -174,7 +198,7 @@ var pageInit = function(){
 			})
 			.catch(error => {
 				hideFullPageLoading();
-
+				alert(error);
 				console.warn("fetch error");
 				console.error(error);
 			});
