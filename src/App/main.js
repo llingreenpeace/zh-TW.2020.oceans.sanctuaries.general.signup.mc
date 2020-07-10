@@ -1,10 +1,10 @@
 const {$, anime, autosize, Cookies, Highcharts, dataLayer} = window
 
-const donateUrl = "https://act.greenpeace.org/page/4723/donate/1?ref=2020-ocean_sanctuaries_thankyou_page";
+const donateUrl = "https://act.greenpeace.org/page/4723/donate/1?ref=2020-oceans_sanctuaries_thankyou_page";
 const shareUrl = "https://cloud.greenhk.greenpeace.org/petition.oceans.sanctuaries";
 const shareFBUrl = "https://cloud.greenhk.greenpeace.org/petition.oceans.sanctuaries";
 const shareLineUrl = "https://cloud.greenhk.greenpeace.org/petition.oceans.sanctuaries";
-const redirectDonateLink = "https://act.greenpeace.org/page/4723/donate/1?ref=2020-ocean_sanctuaries_thankyou_page"
+const redirectDonateLink = "https://act.greenpeace.org/page/4723/donate/1?ref=2020-oceans_sanctuaries_thankyou_page"
 
 window.donate = () => {
 	window.open(
@@ -187,7 +187,7 @@ var pageInit = function(){
 				console.log('fetch response', response);
 				if (response) {
 					if (response.Supporter) { // ok, go to next page
-						sendPetitionTracking("2020-ocean_sanctuaries");
+						sendPetitionTracking("2020-oceans_sanctuaries");
 					}
 
 					hideFullPageLoading();
