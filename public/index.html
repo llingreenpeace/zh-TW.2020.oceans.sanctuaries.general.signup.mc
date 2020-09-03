@@ -22,7 +22,7 @@
 	<meta property="og:type" content="website" />
 	<meta property="og:title" content="守護海洋，攜手成立全球海洋保護區！" />
 	<meta property="og:description" content="海洋的面積占地球71%，是世界最大的供氧來源，也孕育豐富的生物多樣性，包含鯨魚、海豚、海龜、珊瑚等美妙海洋生物。然而，海洋現在卻因塑膠污染、非法捕魚、氣候變遷等面臨前所未有的重大生態危機。我們需要更多人一起站出來連署加入，並捐款資助綠色和平！" />
-	<meta property="og:url" content="https://cloud.greenhk.greenpeace.org/petition.oceans.sanctuaries">
+	<meta property="og:url" content="https://cloud.greentw.greenpeace.org/petition-oceans-sanctuaries">
 	<meta property="og:image" content="%PUBLIC_URL%/img/og-petition.jpg?v=123">
 
 	<!-- Favicons and touch icons -->
@@ -125,7 +125,7 @@
 					</div>
 					<div id='target'>
 						<p>號召更多朋友參與，達到最新目標：<strong id="targetNumber">0</strong> 連署。</p>
-						<p>海洋的面積占地球71%，是世界最大的供氧來源，也孕育豐富的生物多樣性，包含鯨魚、海豚、海龜、珊瑚等美妙海洋生物。然而，海洋現在卻因塑膠污染、非法捕魚、氣候變遷等面臨前所未有的重大生態危機。我們需要更多人一起站出來連署加入，並捐款資助綠色和平！</p>
+						<!--<p>海洋的面積占地球71%，是世界最大的供氧來源，也孕育豐富的生物多樣性，包含鯨魚、海豚、海龜、珊瑚等美妙海洋生物。然而，海洋現在卻因塑膠污染、非法捕魚、氣候變遷等面臨前所未有的重大生態危機。我們需要更多人一起站出來連署加入，並捐款資助綠色和平！</p>-->
 					</div>
 				</div>
 
@@ -137,6 +137,7 @@
 							<label for="center_email" class="name">電子信箱</label>
 							<input name="email" id="center_email" class="email" placeholder="電子信箱" type="email" value=""
 								required />
+							<span class="email-suggestion">您想輸入的是 <strong id="emailSuggestion"></strong> 嗎？</span>
 							<!-- <label id="fake_supporter_lastName-error" class="error" for="fake_supporter_lastName"></label> -->
 						</p>
 						<p class='normal elem'>
@@ -174,8 +175,8 @@
 						<p class="checkbox elem">
 							<input name="send_updates" id="center_rememberme" value="1" checked="checked"
 								type="checkbox" />
-							<span class="remembertext">
-								我同意綠色和平持續為我更新環境專案的最新資訊，並按照其<a href="https://www.greenpeace.org/taiwan/policies/privacy-and-cookies/?ref=2020-oceans_sanctuaries_form_homepage" target="_blank" title="隱私保護政策">個人資料政策</a>與我保持聯絡。
+							<span class="remembertext">								
+								我要即時收到最新專案訊息，知道更多參與和協助的方法！綠色和平尊重並保障您的個人隱私資料，您隨時可取消訂閱，請參考<a href="https://www.greenpeace.org/taiwan/policies/privacy-and-cookies/?ref=2020-oceans_sanctuaries_form_homepage" target="_blank" title="隱私保護政策">隱私保護政策</a>。
 							</span>
 						</p>
 					</fieldset>
@@ -309,8 +310,7 @@
 
 					</h2>
 				</div>
-				<div class='paragraphs'>
-					<p>外籍漁工賣命為遠洋漁業打拼，也應該被合理友善的對待。</p>
+				<div class='paragraphs'>					
 					<p>不管是氣候變遷或是塑膠污染我們都責無旁貸，綠色和平主張在2030年前須成立至少30%的海洋保護區，並與各國簽署「全球海洋公約」，讓珍貴的海洋生態受到保護，重新恢復生機。</p>
 					<p>邀請您一起守護海洋，立即連署並行動捐款支持我們！</p>
 				</div>
@@ -428,7 +428,7 @@
 					<p>邀請您一同參與，支持守護海洋的研究工作</p>
 				</div>
 
-				<button class="btn donate_btn" onclick="window.donate();">
+				<button class="btn donate_btn is-hidden-at-dd-page-only" onclick="window.donate();">
 					支持我們
 				</button>				
 				<button class="btn fb_btn" onclick="window.share();">

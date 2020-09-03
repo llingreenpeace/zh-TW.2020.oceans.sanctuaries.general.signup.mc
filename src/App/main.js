@@ -1,10 +1,10 @@
 const {$, anime, autosize, Cookies, Highcharts, dataLayer} = window
 
-const donateUrl = "https://act.greenpeace.org/page/4723/donate/1?ref=2020-oceans_sanctuaries_thankyou_page";
-const shareUrl = "https://cloud.greenhk.greenpeace.org/petition.oceans.sanctuaries";
-const shareFBUrl = "https://cloud.greenhk.greenpeace.org/petition.oceans.sanctuaries";
-const shareLineUrl = "https://cloud.greenhk.greenpeace.org/petition.oceans.sanctuaries";
-const redirectDonateLink = "https://act.greenpeace.org/page/4723/donate/1?ref=2020-oceans_sanctuaries_thankyou_page"
+const donateUrl = "https://supporter.ea.greenpeace.org/tw/s/donate?campaign=oceans&ref=2020-oceans_sanctuaries_thankyou_page";
+const shareUrl = "https://cloud.greentw.greenpeace.org/petition-oceans-sanctuaries?utm_campaign=2020-ocean_sanctuaries&utm_source=facebook&utm_medium=socialorganic&utm_content=2020-ocean_sanctuaries_petition_tkpage";
+const shareFBUrl = "https://cloud.greentw.greenpeace.org/petition-oceans-sanctuaries?utm_campaign=2020-ocean_sanctuaries&utm_source=facebook&utm_medium=socialorganic&utm_content=2020-ocean_sanctuaries_petition_tkpage";
+const shareLineUrl = "https://cloud.greentw.greenpeace.org/petition-oceans-sanctuaries?utm_campaign=2020-ocean_sanctuaries&utm_source=facebook&utm_medium=socialorganic&utm_content=2020-ocean_sanctuaries_petition_tkpage";
+const redirectDonateLink = "https://supporter.ea.greenpeace.org/tw/s/donate?campaign=oceans&ref=2020-oceans_sanctuaries_thankyou_page"
 
 window.donate = () => {
 	window.open(
@@ -21,13 +21,12 @@ window.share = () => {
 				title: "我守護漁工人權，支持海洋永續！",
 				text: "身為遠洋漁業強權，我們更應該帶領改變，守護漁工人權，現在就加入連署，用您的行動，督促產業進步、守護漁工人權，成為其他國家的典範。",
 				url: shareUrl
-			})
-			.then(() => console.log("Successfully shared"))
+			})			
 			.catch(error => console.log("Error sharing:", error));
 	} else {
 		var baseURL = "https://www.facebook.com/sharer/sharer.php";
 
-		console.log('open', baseURL + "?u=" + encodeURIComponent(shareFBUrl))
+		//console.log('open', baseURL + "?u=" + encodeURIComponent(shareFBUrl))
 		window.open(
 			baseURL + "?u=" + encodeURIComponent(shareFBUrl),
 			"_blank"
@@ -71,15 +70,12 @@ var pageInit = function(){
 			$(this).removeClass('filled');
 		}
 	});
-	/*
-	$('#center_sign-submit').click(function(e){
-		e.preventDefault();
-		//$("#center_sign-form").submit();
-		
-		console.log("center_sign-submit start");
-		
-		console.log("center_sign-form submitting")
-	}).end()*/
+	
+	// hide donation btn in DD page	
+    if (document.getElementsByName("UtmSource")[0].value.toString().toLowerCase() == "dd") {
+		//console.log('dd');
+		$('.donate_btn').hide();		
+	}
 
 	// create the year options
 	let currYear = new Date().getFullYear()
@@ -121,7 +117,7 @@ var pageInit = function(){
 			}
 			return true
 		},
-		"電話格式不正確，請只輸入數字 0912345678 和 02-23612351"
+		"電話格式不正確，請只輸入數字 0912345678 和 02-12345678"
 	)
 
 	$.validator.addClassRules({ // connect it to a css class
@@ -132,20 +128,11 @@ var pageInit = function(){
 
 	$("#center_sign-form").validate({
 		errorPlacement: function(error, element) {
-			console.log(error)
+			//console.log(error)
 			element.parents("div.form-field:first").after( error );
 		},
 		submitHandler: function(form) {
 			showFullPageLoading();
-
-			// for mc tracking
-			// dataLayer.push({
-			// 	'event': 'gaEvent',
-			// 	'eventCategory': 'petitions',
-			// 	'eventAction': 'signup',
-			// 	'eventLabel': '2020-savethearctic',
-			// 	'eventValue': undefined
-			// });
 
 			// These are scripts for MC version
 			// mc forms
@@ -154,9 +141,9 @@ var pageInit = function(){
 			$('#mc-form [name="Email"]').val($('#center_email').val());
 
 			if (!$('#center_phone').prop('required') && !$('#center_phone').val()) {
-			 	$('#mc-form [name="MobilePhone"]').val('0900000000').replace(/^0{1}/, '');
+			 	$('#mc-form [name="MobilePhone"]').val('0900000000');
 			} else {
-			 	$('#mc-form [name="MobilePhone"]').val($('#center_phone').val().replace(/^0{1}/, ''));
+			 	$('#mc-form [name="MobilePhone"]').val($('#center_phone').val());
 			}
 			$('#mc-form [name="Birthdate"]').val($('#center_yearofbirth').val());
 			
@@ -173,7 +160,7 @@ var pageInit = function(){
 				}
 
 				formData.append(el.name, v)
-				console.log("Use", el.name, v)
+				//console.log("Use", el.name, v)
 			});
 			
 			// send the request			
@@ -184,7 +171,7 @@ var pageInit = function(){
 			})
 			.then(response => response.json())
 			.then(response => {
-				console.log('fetch response', response);
+				//console.log('fetch response', response);
 				if (response) {
 					if (response.Supporter) { // ok, go to next page
 						sendPetitionTracking("2020-oceans_sanctuaries");
@@ -198,25 +185,62 @@ var pageInit = function(){
 			})
 			.catch(error => {
 				hideFullPageLoading();
-				alert(error);
-				console.warn("fetch error");
-				console.error(error);
+				showSubmittedError();
+				//console.error(error);
 			});
 		},
 		invalidHandler: function(event, validator) {
 			// 'this' refers to the form
+			/*
 			var errors = validator.numberOfInvalids();
 			if (errors) {
-				console.log(errors)
-				var message = errors===1
-					? 'You missed 1 field. It has been highlighted'
-					: 'You missed ' + errors + ' fields. They have been highlighted';
-				$("div.error").show();
-			} else {
-				$("div.error").hide();
-			}
+				console.log(errors);				
+			}*/
 		}
 	});
+
+	//email suggestion
+	// for email correctness
+	let domains = [
+		"me.com",
+		"outlook.com",
+		"netvigator.com",
+		"cloud.com",
+		"live.hk",
+		"msn.com",
+		"gmail.com",
+		"hotmail.com",
+		"ymail.com",
+		"yahoo.com",
+		"yahoo.com.tw",
+		"yahoo.com.hk"
+	];
+	let topLevelDomains = ["com", "net", "org"];
+
+	var Mailcheck = require('mailcheck');
+	//console.log(Mailcheck);
+	$("#center_email").on('blur', function() {
+		//console.log('center_email on blur - ',  $("#center_email").val());		
+		Mailcheck.run({
+			email: $("#center_email").val(),
+			domains: domains, // optional
+			topLevelDomains: topLevelDomains, // optional
+			suggested: (suggestion) => {
+				$('#emailSuggestion')[0].innerHTML = suggestion.full;
+				$('.email-suggestion').show();
+				//console.log(suggestion.full);
+			},
+			empty: () => {
+				this.emailSuggestion = null
+			}
+		});
+	});
+	$(".email-suggestion").click(function() {
+		$("#center_email").val($('#emailSuggestion')[0].innerHTML);
+		$('.email-suggestion').hide();
+	});
+
+	hideDdBtn();
 }
 
 /**
@@ -264,6 +288,30 @@ const hideFullPageLoading = () => {
 	}, 1100)
 }
 
+/**
+ * Hide the donatin btn in DD page
+ */
+const hideDdBtn = () => {
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	if (urlParams.get('utm_source') === "dd") {
+		$('.is-hidden-at-dd-page-only').hide();
+	}
+}
+
+/**
+ * Show the submitted error message 
+ */
+const showSubmittedError = () => {
+	if ($("#submitted-error").length === 0) {
+		$("body").append(`<div id="submitted-error">抱歉，連署時發生問題，請稍後再嘗試</div>`);		
+	}
+	
+	$("#submitted-error").click(function() {
+		$('#submitted-error').remove();
+	});
+}
+
 const resolveEnPagePetitionStatus = () => {
 	let status = "FRESH";
 	// console.log(window);
@@ -279,7 +327,7 @@ const resolveEnPagePetitionStatus = () => {
 $(function(){
 	const EN_PAGE_STATUS = resolveEnPagePetitionStatus()
 
-	console.log("EN_PAGE_STATUS", EN_PAGE_STATUS)
+	//console.log("EN_PAGE_STATUS", EN_PAGE_STATUS)
 
 	if (EN_PAGE_STATUS==="FRESH") {
 		pageInit();
