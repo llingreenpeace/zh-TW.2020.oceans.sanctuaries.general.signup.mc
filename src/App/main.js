@@ -296,6 +296,8 @@ const hideDdBtn = () => {
 	const urlParams = new URLSearchParams(queryString);
 	if (urlParams.get('utm_source') === "dd") {
 		$('.is-hidden-at-dd-page-only').hide();
+
+		$('#center_phone').removeAttr("required"); //移除電話欄位 required Attr		
 	}
 }
 
