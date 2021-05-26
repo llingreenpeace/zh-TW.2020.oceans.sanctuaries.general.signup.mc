@@ -69,21 +69,15 @@ var pageInit = function(){
 		else{
 			$(this).removeClass('filled');
 		}
-	});
-	
-	// hide donation btn in DD page	
-    if (document.getElementsByName("UtmSource")[0].value.toString().toLowerCase() == "dd") {
-		//console.log('dd');
-		$('.donate_btn').hide();		
-	}
+	});		
 
 	// create the year options
 	let currYear = new Date().getFullYear()
-	for (var i = 0; i < 80; i++) {
+	for (var i = 0; i < 100; i++) {
 
-		let option = `<option value="${currYear-i}-01-01">${currYear-i}</option>`
+		let option = `<option value="${currYear-i}-01-01">${currYear-i}</option>`;
 		$("#center_yearofbirth").append(option);
-		$('#en__field_supporter_NOT_TAGGED_6').append(option);
+		//$('#en__field_supporter_NOT_TAGGED_6').append(option);
 	}
 
 	$.validator.addMethod( //override email with django email validator regex - fringe cases: "user@admin.state.in..us" or "name@website.a"
@@ -110,10 +104,11 @@ var pageInit = function(){
 		"taiwan-phone",
 		(value, element) => {
 			const phoneReg6 = new RegExp(/^(0|886|\+886)?(9\d{8})$/).test(value);
-			const phoneReg7 = new RegExp(/^(0|886|\+886){1}[2-8]-?\d{6,8}$/).test(value);
+			const phoneReg7 = new RegExp(/^(0|886|\+886){1}[3-8]-?\d{6,8}$/).test(value);
+			const phoneReg8 = new RegExp(/^(0|886|\+886){1}[2]-?\d{8}$/).test(value);
 	
 			if (value) {
-				return (phoneReg6 || phoneReg7)
+				return (phoneReg6 || phoneReg7 || phoneReg8)
 			}
 			return true
 		},
@@ -235,7 +230,29 @@ var pageInit = function(){
 		$('.email-suggestion').hide();
 	});
 
-	hideDdBtn();
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+
+	// hide donation btn in DD page	
+	if (urlParams.get('utm_source') === "dd") {
+		$('.is-hidden-at-dd-page-only').hide();
+		$('.is-show-at-dd-page-only').show();
+		$('#center_phone').removeAttr("required"); //移除電話欄位 required Attr		
+		
+		if (urlParams.get('utm_content') === "tp") {
+			$('.line-tp').show();
+			$('.line-tc').hide();
+			$('.line-ks').hide();
+		  } else if (urlParams.get('utm_content') === "tc") {
+			$('.line-tp').hide();
+			$('.line-tc').show();
+			$('.line-ks').hide();
+		  } else {
+			$('.line-tp').hide();
+			$('.line-tc').hide();
+			$('.line-ks').show();
+		  }
+	}
 }
 
 /**
@@ -246,11 +263,17 @@ const changeToPage = (pageNo) => {
 	if (pageNo===1) {
 		$("#page-2").hide();
 	} else if (pageNo===2) {
-		//$('#page-1').hide();
-		//$('#page-2').show();
+		$('#page-1').hide();
+		$('#page-2').show();
 
 		// console.log("go to thank you page", redirectDonateLink)
-		window.location.href = redirectDonateLink;
+		const queryString = window.location.search;
+		const urlParams = new URLSearchParams(queryString);
+
+		// hide donation btn in DD page	
+		if (urlParams.get('utm_source') != "dd") {
+			//window.location.href = redirectDonateLink;
+		}		
 	} else {
 		throw new Error("Unkonw PageNo:"+pageNo)
 	}
@@ -281,19 +304,6 @@ const hideFullPageLoading = () => {
 	setTimeout(() => {
 		$("#page-loading").remove()
 	}, 1100)
-}
-
-/**
- * Hide the donatin btn in DD page
- */
-const hideDdBtn = () => {
-	const queryString = window.location.search;
-	const urlParams = new URLSearchParams(queryString);
-	if (urlParams.get('utm_source') === "dd") {
-		$('.is-hidden-at-dd-page-only').hide();
-
-		$('#center_phone').removeAttr("required"); //移除電話欄位 required Attr		
-	}
 }
 
 /**

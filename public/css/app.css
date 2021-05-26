@@ -190,3 +190,15 @@ form.en__component {
     opacity: 1;
     transition: opacity 1s;
 }
+
+.is-show-at-dd-page-only {
+    display: none;
+}
+
+.line-div {
+    text-align: center;
+}
+.line-div a {
+    color: #00c300;
+    text-decoration: none;
+}
